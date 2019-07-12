@@ -70,9 +70,40 @@ The reason why the previous code could not serialize the Employee class instance
 
 The optional parameter default is a function name which can turn any python class object into an object that can be serialized as JSON. We just need to write a transformation function specifically for Employee and pass it in the dumps() method.
 
+```python
+import json
 
+class Employee(object):
+    def __init__(self, name, department):
+        self.name = name
+        self.department = department
 
+    # This method can return a python dict object by the class instance.
+    # And the dict object can be serialized to JSON.
+    def employee2dict(self, employee):
+        return {
+            'name': employee.name,
+            'department': employee.department
+        }
 
+employee = Employee('Tom', 'Dev')
+print(json.dumps(employee, default=employee.employee2dict))
+```
+#  JSON String To Python Class Instance.
+If we want to deserialize JSON string to an Employee object instance, the loads() method would first convert the string to a python dict object, and then the object_hook function we passed in takes care of converting the dict object to an Employee class instance.
 
+```python
+def dict_to_employee(self, dict):
+    name = dict['name']
+    department = dict['department']
+    ret = Employee(name, department)
+    return ret
 
+employee_string = '{"name":"Tom", "department":"Dev"}'
+
+employee_object = json.loads(employee_string, object_hook=dict_to_employee)
+print(employee_object.name)
+print(employee_object.department)
+
+```
 
