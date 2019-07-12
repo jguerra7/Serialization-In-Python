@@ -73,3 +73,57 @@ The data  1  is :  abc
 The data  2  is :  !@#$
 ```
 
+# Python json dumps
+In the example below we convert a Python object to a JSON object.
+
+Start with a class (Student), create the object (pythonObj) and
+finally convert it to JSON using the method json.dumps().
+
+```python
+import json
+
+class Student:
+    def __init__(self, id, name, password):
+        self.id = id
+        self.name = name
+        self.password = password
+
+pythonObj = Student(1,'ashley','123456')
+
+# Convert Python object to JSON object
+jsonObj = json.dumps(pythonObj.__dict__)
+print(jsonObj)
+```
+This outputs:
+abstract-base-classes.md
+
+> {"password": "123456", "id": 1, "name": "ashley"}
+
+# Python json loads
+If you want to convert JSON data to a Python dictionary, just use loads:
+
+```python
+import json
+
+j = json.loads('{"password": "123456", "id": 1, "name": "ashley"}')
+print(j["name"])
+```
+To convert it to a Python object, define the class and pass the parameters as a map.
+
+```python
+import json
+
+class Student:
+    def __init__(self, id, name, password):
+        self.id = id
+        self.name = name
+        self.password = password
+
+j = json.loads('{"password": "123456", "id": 1, "name": "ashley"}')
+pythonObj = Student(**j)
+
+print(pythonObj.id)
+print(pythonObj.name)
+print(pythonObj.password)
+```
+
